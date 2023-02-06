@@ -1,27 +1,9 @@
 class World {
     character = new Character();
-
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-    ];
-
-    clouds = [
-        new Cloud()
-    ];
-
-    background = [
-        new Background ('img/5_background/layers/air.png',0),
-        new Background('img/5_background/layers/3_third_layer/1.png', 0),
-        new Background ('img/5_background/layers/2_second_layer/1.png',0),
-        new Background ('img/5_background/layers/1_first_layer/1.png',0),
-        new Background ('img/5_background/layers/air.png',729),
-        new Background('img/5_background/layers/3_third_layer/2.png', 729.5),
-        new Background ('img/5_background/layers/2_second_layer/2.png',729),
-        new Background ('img/5_background/layers/1_first_layer/2.png',729),
-        
-    ];
+    level = level1
+    enemies = level1.enemies;
+    clouds = level1.clouds;
+    background = level1.background;
     canvas;
     ctx;
     keyboard;
@@ -44,10 +26,10 @@ class World {
         // welt wird mit verschoben 
         this.ctx.translate(this.camera_x,0);
         
-        this.addToObjectMap(this.background);
-        this.addToObjectMap(this.clouds);
+        this.addToObjectMap(this.level.background);
+        this.addToObjectMap(this.level.clouds);
         this.addToMap(this.character);
-        this.addToObjectMap(this.enemies);
+        this.addToObjectMap(this.level.enemies);
         // welt wird mit zurück verschoben
         this.ctx.translate(-this.camera_x,0);
 
