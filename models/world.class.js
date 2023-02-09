@@ -17,21 +17,21 @@ class World {
         this.setWorld();
     }
 
-    setWorld(){
+    setWorld() {
         this.character.world = this;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)  // cleart den Avartar
         // welt wird mit verschoben 
-        this.ctx.translate(this.camera_x,0);
-        
+        this.ctx.translate(this.camera_x, 0);
+
         this.addToObjectMap(this.level.background);
         this.addToObjectMap(this.level.clouds);
         this.addToMap(this.character);
         this.addToObjectMap(this.level.enemies);
         // welt wird mit zurück verschoben
-        this.ctx.translate(-this.camera_x,0);
+        this.ctx.translate(-this.camera_x, 0);
 
         // draw() wird immer wieder aufgerufen 
         let self = this;
@@ -40,24 +40,36 @@ class World {
         });
     }
 
-    addToObjectMap(Object){
-        Object.forEach(o =>{ // schleife => funktion 
-            this. addToMap(o); // geht in addTOMap
+    addToObjectMap(Object) {
+        Object.forEach(o => { // schleife => funktion 
+            this.addToMap(o); // geht in addTOMap
         });
     }
 
-    addToMap(mo){
-        if(mo.otherDirection){ //objekt 
-            this.ctx.save(); // bilder werden gespeichert 
-            this.ctx.translate(mo.width,0); // bilder werden eingefügt 
-            this.ctx.scale(-1,1); //bilder werden gedreht 
-            mo.x = mo.x * -1;
+    addToMap(mo) {
+        if (mo.otherDirection) {
+            this.flipImage(mo)
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height); 
-        if(mo.otherDirection){
-            mo.x = mo.x * -1;
-            this.ctx.restore();// bilder werden wider rückganing gemacht 
+
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+
+        if (mo.otherDirection) {
+            this.flipImageBack(mo)
         }
+    }
+
+    flipImage(mo) {
+        //objekt 
+        this.ctx.save(); // bilder werden gespeichert 
+        this.ctx.translate(mo.width, 0); // bilder werden eingefügt 
+        this.ctx.scale(-1, 1); //bilder werden gedreht 
+        mo.x = mo.x * -1;
+    }
+
+    flipImageBack(mo) {
+        mo.x = mo.x * -1;
+        this.ctx.restore();// bilder werden wider rückganing gemacht 
     }
 
 }

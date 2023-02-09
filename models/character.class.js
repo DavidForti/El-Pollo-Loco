@@ -44,22 +44,22 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
-                this.otherDirection = false;
-                this.walking_sound.play();
+               this.moveRight();
+               this.otherDirection = false;
+            //    this.walking_sound.play();
             }
 
             if (this.world.keyboard.LEFT && this.x > -0) {
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
-                  this.walking_sound.play();
+                // this.walking_sound.play();
             }
             
             /**
              * character jumps
              */
             if(this.world.keyboard.SPACE && !this.isAboveGround()){
-                this.speedY = 25;
+              this.jump();
             }
 
             /**
@@ -79,8 +79,4 @@ class Character extends MovableObject {
         }, 50);  
     }
 
-
-    jump() {
-
-    }
 }
