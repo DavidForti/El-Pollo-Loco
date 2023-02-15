@@ -1,15 +1,10 @@
-class MovableObject {
-    x = 120;
-
-    img;
-    height = 280;
-    width = 150;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObejct {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
     acceleration = 2;
+    energy = 100;
+    lasHit = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -24,42 +19,36 @@ class MovableObject {
         return this.y < 150;
     }
 
-    // ist wie loadImage('img/test.png')
-    loadImage(path) {
-        this.img = new Image(); // ist gleich wie <img> tak 
-        this.img.src = path;
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x &&
+            this.y < mo.y + mo.height
     }
 
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken) {
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lasHit = new Date().getTime(); // zeit in zahlenform
         }
     }
 
-
-
-
-
-
-    loadImages(arr) {
-        arr.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
-
+    isDead() {
+        return this.energy == 0;
     }
 
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lasHit; // diff in ms
+        timepassed = timepassed / 1000; //diff in sec.
+        return timepassed < 0.5;
+    }
+
+
+
     playAnimation(images) {
-        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let i = this.currentImage % images.length;
         // i = 0,1,2,3,4,5 ƒ
         let path = images[i];
         this.img = this.imageCache[path];
