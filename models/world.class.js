@@ -8,7 +8,9 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    statusBarBottle = new StatusBarBottle();
     statusBar = new StatusBar();
+    statusBarCoin = new StatusBarCoin();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d'); // varibale ctx wird mit cnavas.getContext('2d') deklariert
@@ -41,7 +43,9 @@ class World {
         this.addToObjectMap(this.level.background);
 
         this.ctx.translate(-this.camera_x, 0);// Back
+        this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBar);
+        this.addToMap(this.statusBarCoin);
         this.ctx.translate(this.camera_x, 0); // Forwards
 
 
